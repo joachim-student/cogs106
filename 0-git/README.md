@@ -22,6 +22,18 @@
 
 ---
 
+### Obtaining Linux
+
+* Install it as your main operating system
+* Run it from a USB drive
+* Install VirtualBox and create a virtual machine
+* Rent an Amazon Web Services instance
+* Access the High Performance Cluster
+* On Mac:  Press Command + Space to open Spotlight Search, type `terminal.app` and open it
+* On Windows:  Download [putty.exe](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) and enter `hpc3.rcic.uci.edu` as Host Name and click Open
+
+---
+
 ### Shell commands
 
 * ls
@@ -134,6 +146,12 @@
 <!-- end list -->
 
     git clone git@github.com:joachim-student/cogs-205b.git
+
+5. On HPC3
+
+<!-- end list -->
+
+    module load module-git
 
 ---
 
