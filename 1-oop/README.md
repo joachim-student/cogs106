@@ -138,15 +138,15 @@ You can also define functions "on the fly" inside a script or another function. 
 * MATLAB
 
   ```matlab
-  >> a = 4;
-  >> timesA = @(x) x * a;
-  >> timesA(3)
+  >> i = 4;
+  >> timesi = @(x) x * i;
+  >> timesi(3)
   ans =
       12
   >> a = 3;
-  >> timesA(3)
+  >> timesi(3)
   ans =
-      9
+      12
 
 ---
 ## Some things you should not do but should know about
