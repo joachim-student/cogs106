@@ -27,7 +27,7 @@ git commit -m "updated version file"
 git push origin main
 ```
 
-In order to run the script you must first make it executable by running `chmod +x update-version.sh` and then call it using `./update-version.sh`. Also, you need to be in the same directory where the script is located and you need to have git properly configured but on the local machine and on github.
+In order to run the script you must first make it executable by running `chmod +x update-version.sh` and then call it using `./update-version.sh`. Also, you need to be in the same directory where the script is located and you need to have git properly configured both on the local machine and on github.
 
 Note that the commands in this script will push to the remote repository named "origin" and the branch "main". If your repository uses different settings, you will need to adjust the script accordingly.
 
