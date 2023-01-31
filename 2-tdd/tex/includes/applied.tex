@@ -1,0 +1,33 @@
+\begin{frame}
+\frametitle{Bayes factor for binomial data}
+
+\begin{itemize}
+\item Let's consider a binomial experiment with $n$ trials and $k$ successes.
+\item Let's denote the success probability by $\theta$.
+\item We have two competing models that differ in their prior distributions for $\theta$:
+\begin{itemize}
+\item The "slab" prior: $\theta \sim U(0, 1)$
+\item The "spike" prior: $\theta \sim U(0.45, 0.55)$
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Bayes factor for binomial data}
+
+\begin{itemize}
+\item The posterior distributions given the data can be found as:
+\begin{align*}
+p(\theta|k) &\propto p(k|\theta)p(\theta) \\
+p(\theta|k, \text{slab}) &\propto \binom{n}{k} \theta^k (1 - \theta)^{n-k} \times U\left(\theta |0, 1\right) \\
+p(\theta|k, \text{spike}) &\propto \binom{n}{k} \theta^k (1 - \theta)^{n-k} \times U\left(\theta |0.45, 0.55\right)
+\end{align*}
+\item The Bayes factor for comparing the two models can be calculated as:
+\begin{align*}
+B &= \frac{p(k|\text{spike})}{p(k|\text{slab})} \\
+&= \frac{\int_{0.45}^{0.55} \binom{n}{k} \theta^k (1 - \theta)^{n-k} d\theta}{\int_{0}^{1} \binom{n}{k} \theta^k (1 - \theta)^{n-k} d\theta}
+\end{align*}
+\end{itemize}
+
+\end{frame}

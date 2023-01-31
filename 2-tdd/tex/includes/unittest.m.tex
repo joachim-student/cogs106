@@ -1,0 +1,37 @@
+\begin{frame}[fragile]
+  \frametitle{Unit tests in MATLAB}
+  \begin{lstlisting}[style=MATLAB]
+function tests = test_example
+  tests = functiontests(localfunctions);
+end
+  function testSin(testCase)  % Test that sin(pi/2) is 1
+    obtainedAnswer = sin(pi/2);
+    expectedAnswer = 1;
+    verifyEqual(testCase,obtainedAnswer,expectedAnswer)
+  end
+  function testRoots(testCase)  % Test that roots are 2
+    obtainedAnswer = roots([1 -4 4]);
+    expectedAnswer = [2 2];
+    verifyEqual(testCase,obtainedAnswer,expectedAnswer)
+  end
+\end{lstlisting}\pause
+
+  \begin{lstlisting}[style=MATLAB]
+suite = testSuite({'test_example'});
+result = run(suite);
+disp(table(result))
+if all([result.Passed])
+    disp('All tests passed.')
+else disp('There were test failures.')
+end
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Unit tests in MATLAB}
+  More on unit tests in MATLAB via The MathWorks:
+  
+  {https://www.mathworks.com/help/matlab/matlab\_prog/write-function-based-unit-tests.html}
+  
+  {https://www.mathworks.com/help/matlab/matlab\_prog/write-simple-test-case-with-functions.html}
+\end{frame}

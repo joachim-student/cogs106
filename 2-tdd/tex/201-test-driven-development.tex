@@ -1,0 +1,41 @@
+\documentclass{beamer}
+
+\usepackage{amsmath}
+
+\input{includes/header}
+
+\begin{document}
+
+\input{includes/unittest}
+
+\section{Unit tests}
+
+\iffalse
+\input{includes/unittest.py.tex}
+%\addtocounter{framenumber}{-2}
+\else
+\input{includes/unittest.m.tex}
+\fi
+
+\section{An applied example}
+
+\input{includes/applied.tex}
+
+\end{document}
+
+
+\begin{frame}
+  \frametitle{Bayes Factor for Binomial Hypothesis Testing}
+  
+  \begin{itemize}
+    \item The Bayes factor is given by the ratio of the integrals: 
+    \[BF = \frac{\int_{0}^{1} p(D|p)p(p|H_1)dp}{\int_{0}^{1} p(D|p)p(p|H_0)dp}\]
+    \item This can be computed using numerical integration
+  \end{itemize}
+  
+\end{frame}
+
+
+
+
+\end{document}
