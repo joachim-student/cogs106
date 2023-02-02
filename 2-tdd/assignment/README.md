@@ -35,7 +35,7 @@ d' = Z(H) - Z(FA)
 where Z(H) is the standard normal deviate of the hit rate and Z(FA) is the standard normal deviate of the false alarm rate.  The function Z() is the inverse cumulative distribution function of the standard normal distribution.
 
 ### Criterion (C)
-The criterion (C) is a measure of the observer's response bias, defined as the midpoint between the distributions of signal and noise:
+The criterion (C) is a measure of the observer's response bias, defined as the point above which the participant will decide "signal":
 
 C = -0.5 * (Z(H) + Z(FA))
 
@@ -50,6 +50,14 @@ In this assignment, you will write a class in either MATLAB or Python that imple
 Your implementation should pass the unit test suite provided in the class repository.  Your grade will be based on the passing of the suite.
 
 Additionally, you should not rely on too many external modules or packages.  MATLAB users may use the `Statistics and Machine Learning Toolbox` and python users may use `numpy` and `scipy`.  Python 3.8 is preferred.
+
+---
+
+## Some hints to get started
+
+1. Start by checking out the test suites ([MATLAB](https://github.com/joachim-student/cogs106/tree/master/2-tdd/assignment/m), [python](https://github.com/joachim-student/cogs106/tree/master/2-tdd/assignment/py)) to get an idea of what they expect.
+2. Use the BayesFactor class ([MATLAB](https://github.com/joachim-student/cogs106/tree/master/2-tdd/m), [python](https://github.com/joachim-student/cogs106/tree/master/2-tdd/py)) as a template.
+3. Start writing your class with the constructor method, which takes four inputs in the right order: `SignalDetection(hits, misses, falaseAlarms, correctRejections)`
 
 ---
 
