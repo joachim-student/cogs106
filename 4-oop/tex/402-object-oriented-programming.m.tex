@@ -1,0 +1,434 @@
+\documentclass[handout]{beamer}
+\usetheme{metropolis}
+\usepackage{colortbl}
+
+\input{includes/header}
+
+\title{Intermediate object-oriented programming}
+\author{Joachim Vandekerckhove}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Input validation}
+
+\begin{frame}[fragile]{Input Validation}
+    \begin{itemize}
+        \item Input validation is the process of checking if input data is valid before using it.
+        \item It helps ensure that your program runs correctly and securely.
+        \item Common types of input validation include range checking, type checking, format checking, and existence checking.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Benefits of Input Validation}
+    \begin{itemize}
+        \item Helps prevent unexpected behavior.
+        \item Improves code readability and maintainability.
+        \item Reduces security risks.
+        \item Provides better user experience by giving informative error messages.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Common Types of Input Validation}
+    \begin{itemize}
+        \item Range checking: Ensures input falls within acceptable range of values.
+        \item Type checking: Ensures input is of the expected type.
+        \item Format checking: Ensures input conforms to a specific format (e.g., phone numbers or email addresses).
+        \item Existence checking: Ensures input is not empty or null.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Basic Input Validation Example}
+\begin{lstlisting}[style=matlab]
+classdef BankAccount
+    properties
+        balance
+    end
+    methods
+        function obj = BankAccount(balance)
+            if balance < 0
+                error("Balance cannot be negative.")
+            end
+            obj.balance = balance;
+        end
+    end
+end
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{Handling Invalid Inputs Gracefully}
+    \begin{itemize}
+        \item Provide informative error messages to the user.
+        \item Log error messages for developers to review.
+        \item Raise exceptions with descriptive error messages.
+        \item Ensure that the program does not continue with invalid input.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Input Validation in the Context of OOP}
+    \begin{itemize}
+        \item Input validation can be incorporated into methods and class constructors.
+        \item It's a good practice to perform input validation as close to the source of input as possible.
+        \item Encapsulation allows you to define rules for valid state and prevent invalid input from corrupting the state of the object.
+    \end{itemize}
+\end{frame}
+
+\section{Corruption}
+
+\begin{frame}[fragile]{Corrupted State}
+    
+    A corrupted state is a situation where an object's data is in an inconsistent or invalid state, often caused by an error in the program or a violation of the object's invariants.
+    
+    \begin{itemize}
+        \item An object is in a corrupted state when its internal data is inconsistent with the object's intended behavior
+        \item A corrupted state can lead to bugs and errors in the program
+        \item Preventing corrupted states is an important part of writing correct, reliable code
+    \end{itemize}
+    
+\end{frame}
+
+
+\begin{frame}[fragile]{Example: Workflow that leads to a Corrupted State}
+
+Consider a bank account object, with a balance attribute and a deposit and withdraw method.
+
+\begin{lstlisting}[style=MATLAB]
+classdef BankAccount
+  properties
+    balance
+  end
+  methods
+    function obj = BankAccount(balance)
+      if balance < 0, error("Balance must be positive."), end
+      obj.balance = balance;
+    end
+    function obj = deposit(obj, amount)
+      obj.balance = obj.balance + amount;
+    end
+    function obj = withdraw(obj, amount)
+      if amount > obj.balance, error("Overdrawing error!"), end
+      obj.balance = obj.balance - amount;
+    end
+  end
+end
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]{Example: Workflow that leads to a Corrupted State}
+        
+    Suppose we have the following workflow:
+    
+    \begin{enumerate}
+        \item Create a new bank account with initial balance of 100 dollars
+        \item Make a deposit of -50 dollars
+        \item That's arguably not a deposit
+        \item This workflow violates the invariants of the bank account object and results in a corrupted state, where the balance is negative.
+    \end{enumerate}
+    
+\end{frame}
+
+
+\begin{frame}[fragile]{Example: External Function Bypassing Logger Method}
+    
+    Let's add a ``history'' attribute and a ``logger'' method to keep track of all the transactions made on the account:
+    
+    \begin{lstlisting}[style=Matlab]
+classdef BankAccount
+    properties
+        balance
+        history
+    end
+    
+    methods
+        function obj = BankAccount(balance)
+            obj.balance = balance;
+            obj.history = {};
+        end
+        
+        function obj = deposit(obj, amount)
+            obj.balance = obj.balance + amount;
+            obj.history{end+1} = {'deposit', amount};
+        end
+    \end{lstlisting}
+    
+\end{frame}
+        
+
+\begin{frame}[fragile]{Example: External Function Bypassing Logger Method}
+    
+    \begin{lstlisting}[style=Matlab]
+        function obj = withdraw(obj, amount)
+            if amount > obj.balance
+                error('Overdrawing not allowed!');
+            end
+            obj.balance = obj.balance - amount;
+            obj.history{end+1} = {'withdraw', amount};
+        end
+        
+        function logger(obj)
+            for i = 1:length(obj.history)
+                fprintf('%s %d\n', ...
+                    obj.history{i}{1}, ... 
+                    obj.history{i}{2});
+            end
+        end
+    end
+end
+    \end{lstlisting}
+    
+\end{frame}
+
+
+\begin{frame}[fragile]{Example: External Function Bypassing Logger Method}
+    
+    Now suppose an \textit{external} function edits the balance attribute of the BankAccount object directly, bypassing the deposit and withdraw methods and the logger method:
+    
+    \begin{lstlisting}[style=Matlab]
+>> account = BankAccount(0);
+>> account.balance = 1e9
+    \end{lstlisting}
+    
+    This bypasses the logger method and leads to a corrupted state where the transaction history no longer reflects the actual transactions made on the account.
+    
+\end{frame}
+
+
+\section{Private vs.\ Public}
+
+\begin{frame}[fragile]{Private vs. Public in OOP}
+
+    Public methods and attributes are accessible from outside the class
+    
+    Private methods and attributes are only accessible within the class
+    
+    \begin{lstlisting}[style=Matlab]
+classdef MyClass
+    properties
+        public_attr = 0;
+    end
+    properties (Access = private)
+        private_attr = 1;
+    end
+    methods
+        function obj = MyClass(), end
+        function public_method(obj), end
+    end
+    methods (Access = private)
+        function private_method(obj), end
+    end
+end
+    \end{lstlisting}
+    
+\end{frame}
+
+
+\begin{frame}[fragile]{Private vs Public Methods and Attributes}
+  \begin{itemize}
+    \item MATLAB lets you define methods or attributes as private
+    \item Private methods and attributes are available for internal use only, and cannot be accessed from outside the class
+    \item Public methods and attributes can be freely accessed from outside the class
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Private Attributes in the BankAccount Class}
+\begin{lstlisting}[style=Matlab]
+classdef BankAccount
+   properties (Access = private)
+      balance
+   end
+   methods
+      function obj = BankAccount(initial_balance)
+         if initial_balance < 0
+            error('Initial balance cannot be negative.'), end
+         obj.balance = initial_balance;
+      end
+      function balance = get_balance(obj)
+         balance = obj.balance;
+end, end, end
+\end{lstlisting}
+
+  \begin{itemize}
+    \item The `balance` attribute in `BankAccount` is now private
+    \item It is accessed using the `get\_balance()` method, which is public
+    \item External code can't modify the `balance` attribute directly
+    \item This ensures that the balance is always valid and prevents external code from corrupting the object's state
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Public Methods in the BankAccount Class}
+  \begin{lstlisting}[style=matlab]
+classdef BankAccount
+    properties(Access = private)
+        balance
+    end
+    
+    methods
+        function obj = BankAccount(initial_balance)
+            if initial_balance < 0
+                error('Initial balance cannot be <0')
+            end
+            obj.balance = initial_balance;
+        end
+        
+        function balance = get_balance(obj)
+            balance = obj.balance;
+        end
+    
+  \end{lstlisting}
+\end{frame}    
+\begin{frame}[fragile]{Public Methods in the BankAccount Class}
+  \begin{lstlisting}[style=matlab]
+        function deposit(obj, amount)
+            if amount < 0
+                error('Deposit amount cannot be <0')
+            end
+            obj.balance = obj.balance + amount;
+        end
+        
+        function withdraw(obj, amount)
+            if amount < 0
+                error('Withdrawal amount cannot be <0')
+            end
+            if obj.balance < amount
+                error('Insufficient funds')
+            end
+            obj.balance = obj.balance - amount;
+        end
+    end
+end
+
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Public Methods in the BankAccount Class}
+  \begin{itemize}
+    \item The `deposit()` and `withdraw()` methods in `BankAccount` are public
+    \item They allow external code to modify the object's state in a controlled manner
+    \item They perform validation to ensure that the object remains in a valid state
+    \item External code cannot access the `balance` attribute directly, so it cannot corrupt the object's state
+  \end{itemize}
+\end{frame}
+
+\section{Operator overloading}
+
+\begin{frame}[fragile]{Operator Overloading in Object-Oriented Programming}
+Operator overloading is a technique in object-oriented programming that allows us to define the behavior of operators (+, -, *, /, etc.) for user-defined objects.
+
+In MATLAB, operator overloading is achieved by defining methods (with specific names) in a class that correspond to the operator being used.
+
+For example, the addition operator (+) can be overloaded by defining the `plus()` method in a class. 
+
+Consider the following example:
+\end{frame}
+
+
+\begin{frame}[fragile]{Operator Overloading in Object-Oriented Programming}
+Suppose we have a class that represents a 2D vector. We can overload the addition operator (+) to allow adding two vectors.
+
+\begin{lstlisting}[style=matlab]
+classdef Vector
+    properties
+        x
+        y
+    end
+    methods
+        function obj = Vector(x, y)
+            obj.x = x; obj.y = y; end
+        function out = plus(v1, v2)
+            out = Vector(v1.x + v2.x, v1.y + v2.y); end
+    end
+end
+
+\end{lstlisting}
+
+Here, the `plus()` method takes another `Vector` object as an input, adds the corresponding components of the two vectors, and returns a new `Vector` object that represents the sum of the two vectors.
+\end{frame}
+
+\begin{frame}[fragile]{Using Overloaded Operators}
+Let's create two `Vector` objects and add them together using the overloaded addition operator (+):
+
+\begin{lstlisting}[style=matlab]
+>> v1 = Vector(1, 2);
+>> v2 = Vector(3, 4);
+>> v3 = v1 + v2
+\end{lstlisting}
+
+Output: \begin{verbatim}v3 = 
+  Vector with properties:
+    x: 4
+    y: 6\end{verbatim}
+
+Here, we create two `Vector` objects, `v1` and `v2`, and add them together using the overloaded addition operator `+`. The resulting `Vector` object, `v3`, has components `(4, 6)`.
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Operator Overloading in Object-Oriented Programming}
+We can also overload other operators, such as the multiplication operator (.*), to perform scalar multiplication of a vector.
+
+\begin{lstlisting}[style=matlab]
+classdef Vector
+    properties
+        x
+        y
+    end
+    methods
+        function obj = Vector(x, y)
+            obj.x = x; obj.y = y; end
+        function out = plus(v1, v2)
+            out = Vector(v1.x + v2.x, v1.y + v2.y); end
+        function out = times(obj, k)
+            out = Vector(obj.x .* k, obj.y .* k); end
+end, end
+\end{lstlisting}
+
+By overloading operators, we can make our code more intuitive and expressive, and allow our user-defined objects to behave more like built-in types.
+\end{frame}
+
+\begin{frame}[fragile]{Incomplete List of Overloaded Operators in MATLAB}
+\begin{center}
+\begin{tabular}{ccc}
+\begin{tabular}{ccc}
+\rowcolor{gray!30}
+{Operator} & Function & Description \\
+\rowcolor{gray!0}
+\texttt{+} & \texttt{plus} & Addition \\
+\rowcolor{gray!10}
+\texttt{-} & \texttt{minus} & Subtraction \\
+\rowcolor{gray!0}
+\texttt{*} & \texttt{mtimes} & Matrix multiplication \\
+\rowcolor{gray!10}
+\texttt{/} & \texttt{mrdivide} & Matrix right division \\
+\rowcolor{gray!0}
+\texttt{.*} & \texttt{times} & Multiplication \\
+\rowcolor{gray!10}
+\texttt{./} & \texttt{rdivide} & Right division \\
+\rowcolor{gray!0}
+\texttt{.\textasciicircum} & \texttt{power} & Exponentiation \\
+\rowcolor{gray!10}
+\texttt{==} & \texttt{eq} & Equal to \\
+\rowcolor{gray!0}
+\texttt{\textasciitilde=} & \texttt{ne} & Not equal to \\
+\rowcolor{gray!10}
+\texttt{>} & \texttt{gt} & Greater than \\
+\rowcolor{gray!0}
+\texttt{>=} & \texttt{ge} & Greater than or equal to \\
+\rowcolor{gray!10}
+\texttt{<} & \texttt{lt} & Less than \\
+\rowcolor{gray!0}
+\texttt{<=} & \texttt{le} & Less than or equal to \\
+\end{tabular}
+
+\end{tabular}
+\end{center}
+\end{frame}
+
+
+
+\end{document}

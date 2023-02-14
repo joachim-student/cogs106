@@ -1,0 +1,354 @@
+\documentclass[handout]{beamer}
+\usetheme{metropolis}
+\usepackage{colortbl}
+
+\input{includes/header}
+
+\title{Intermediate object-oriented programming}
+\author{Joachim Vandekerckhove}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Input validation}
+
+\begin{frame}[fragile]{Input Validation}
+    \begin{itemize}
+        \item Input validation is the process of checking if input data is valid before using it.
+        \item It helps ensure that your program runs correctly and securely.
+        \item Common types of input validation include range checking, type checking, format checking, and existence checking.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Benefits of Input Validation}
+    \begin{itemize}
+        \item Helps prevent unexpected behavior.
+        \item Improves code readability and maintainability.
+        \item Reduces security risks.
+        \item Provides better user experience by giving informative error messages.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Common Types of Input Validation}
+    \begin{itemize}
+        \item Range checking: Ensures input falls within acceptable range of values.
+        \item Type checking: Ensures input is of the expected type.
+        \item Format checking: Ensures input conforms to a specific format (e.g., phone numbers or email addresses).
+        \item Existence checking: Ensures input is not empty or null.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Basic Input Validation Example}
+    \begin{lstlisting}[style=python]
+class BankAccount:
+    def __init__(self, owner, balance):
+        if balance < 0:
+            raise ValueError("Balance cannot be negative.")
+        self.owner = owner
+        self.balance = balance
+    # ...
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Handling Invalid Inputs Gracefully}
+    \begin{itemize}
+        \item Provide informative error messages to the user.
+        \item Log error messages for developers to review.
+        \item Raise exceptions with descriptive error messages.
+        \item Ensure that the program does not continue with invalid input.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Input Validation in the Context of OOP}
+    \begin{itemize}
+        \item Input validation can be incorporated into methods and class constructors.
+        \item It's a good practice to perform input validation as close to the source of input as possible.
+        \item Encapsulation allows you to define rules for valid state and prevent invalid input from corrupting the state of the object.
+    \end{itemize}
+\end{frame}
+
+\section{Corruption}
+
+\begin{frame}[fragile]{Corrupted State}
+    
+    A corrupted state is a situation where an object's data is in an inconsistent or invalid state, often caused by an error in the program or a violation of the object's invariants.
+    
+    \begin{itemize}
+        \item An object is in a corrupted state when its internal data is inconsistent with the object's intended behavior
+        \item A corrupted state can lead to bugs and errors in the program
+        \item Preventing corrupted states is an important part of writing correct, reliable code
+    \end{itemize}
+    
+\end{frame}
+
+
+\begin{frame}[fragile]{Example: Workflow that leads to a Corrupted State}
+    
+    Consider a bank account object, with a balance attribute and a deposit and withdraw method.
+    
+    \begin{lstlisting}[style=python]
+class BankAccount:
+    
+    def __init__(self, balance):
+        if balance < 0:
+            raise ValueError("Balance must be positive.")
+        self.balance = balance
+    
+    def deposit(self, amount):
+        self.balance += amount
+        
+    def withdraw(self, amount):
+        if amount > self.balance:
+            raise ValueError("Overdrawing not allowed!")
+        self.balance -= amount
+    \end{lstlisting}
+    
+\end{frame}
+
+
+\begin{frame}[fragile]{Example: Workflow that leads to a Corrupted State}
+        
+    Suppose we have the following workflow:
+    
+    \begin{enumerate}
+        \item Create a new bank account with initial balance of 100 dollars
+        \item Make a deposit of -50 dollars
+        \item That's arguably not a deposit
+        \item This workflow violates the invariants of the bank account object and results in a corrupted state, where the balance is negative.
+    \end{enumerate}
+    
+\end{frame}
+
+
+\begin{frame}[fragile]{Example: External Function Bypassing Logger Method}
+    
+    Let's add a ``history'' attribute and a ``logger'' method to keep track of all the transactions made on the account:
+    
+    \begin{lstlisting}[style=python]
+class BankAccount:
+    
+    def __init__(self, balance):
+        self.balance = balance
+        self.history = []
+    
+    def deposit(self, amount):
+        self.balance += amount
+        self.history.append(('deposit', amount))
+    
+    def withdraw(self, amount):
+        self.balance -= amount
+        self.history.append(('withdraw', amount))
+        
+    def logger(self):
+        for transaction in self.history:
+            print(transaction)
+    \end{lstlisting}
+    
+\end{frame}
+
+
+\begin{frame}[fragile]{Example: External Function Bypassing Logger Method}
+    
+    Now suppose an \textit{external} function edits the balance attribute of the BankAccount object directly, bypassing the deposit and withdraw methods and the logger method:
+    
+    \begin{lstlisting}[style=python]
+def yoink(account):
+    account.balance -= 100
+    \end{lstlisting}
+    
+    This bypasses the logger method and leads to a corrupted state where the transaction history no longer reflects the actual transactions made on the account.
+    
+\end{frame}
+
+
+\section{Private vs.\ Public}
+
+\begin{frame}[fragile]{Private vs.\ Public in OOP}
+    
+    Public methods and attributes are accessible from outside the class
+    
+    Private methods and attributes are only accessible within the class
+    
+    \begin{lstlisting}[style=python]
+class MyClass:
+    
+    def __init__(self):
+        self.public_attr = 0
+        self._private_attr = 1
+    
+    def public_method(self):
+        print("This is a public method")
+        self._private_method()
+    
+    def _private_method(self):
+        print("This is a private method")
+
+    \end{lstlisting}
+    
+\end{frame}
+
+
+\begin{frame}[fragile]{Private vs Public Methods and Attributes}
+  \begin{itemize}
+    \item In Python, there are no \textit{truly} private methods or attributes
+    \item By convention (only), a leading underscore indicates a ``private'' method or attribute
+    \item Private methods and attributes are intended for internal use only, and should not be accessed from outside the class
+    \item Public methods and attributes can be freely accessed from outside the class
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Private Attributes in the BankAccount Class}
+  \begin{lstlisting}[style=python]
+class BankAccount:
+    def __init__(self, initial_balance):
+        if initial_balance < 0:
+            raise ValueError("Initial balance cannot be <0")
+        self._balance = initial_balance
+
+    def get_balance(self):
+        return self._balance
+  \end{lstlisting}
+  \begin{itemize}
+    \item The `\_balance` attribute in `BankAccount` is now private
+    \item It is accessed using the `get\_balance()` method, which is public
+    \item External code shouldn't modify the `\_balance` attribute directly
+    \item This ensures that the balance is always valid and prevents external code from corrupting the object's state
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Public Methods in the BankAccount Class}
+  \begin{lstlisting}[style=python]
+class BankAccount:
+    def __init__(self, initial_balance):
+        if initial_balance < 0:
+            raise ValueError("Initial balance cannot be <0")
+        self._balance = initial_balance
+
+    def get_balance(self):
+        return self._balance
+        
+    def deposit(self, amount):
+        if amount < 0:
+            raise ValueError("Deposit amount cannot be <0")
+        self._balance += amount
+
+    def withdraw(self, amount):
+        if amount < 0:
+            raise ValueError("Withdrawal amount cannot be <0")
+        if self._balance < amount:
+            raise ValueError("Insufficient funds")
+        self._balance -= amount
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Public Methods in the BankAccount Class}
+  \begin{itemize}
+    \item The `deposit()` and `withdraw()` methods in `BankAccount` are public
+    \item They allow external code to modify the object's state in a controlled manner
+    \item They perform validation to ensure that the object remains in a valid state
+    \item External code cannot access the `balance` attribute directly, so it cannot corrupt the object's state
+  \end{itemize}
+\end{frame}
+
+\section{Operator overloading}
+
+\begin{frame}[fragile]{Operator Overloading in Object-Oriented Programming}
+Operator overloading is a technique in object-oriented programming that allows us to define the behavior of operators (+, -, *, /, etc.) for user-defined objects.
+
+In Python, operator overloading is achieved by defining special methods (with double underscores) in a class that correspond to the operator being used.
+
+For example, the addition operator (+) can be overloaded by defining the `\_\_add\_\_` method in a class. 
+
+Consider the following example:
+\end{frame}
+
+
+\begin{frame}[fragile]{Operator Overloading in Object-Oriented Programming}
+Suppose we have a class called `Vector` that represents a mathematical vector in 2D space. We can overload the addition operator (+) to allow adding two vectors together.
+
+\begin{lstlisting}[style=python]
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+\end{lstlisting}
+
+Here, the `\_\_add\_\_` method takes another `Vector` object as an argument, adds the corresponding components of the two vectors, and returns a new `Vector` object that represents the sum of the two vectors.
+\end{frame}
+
+\begin{frame}[fragile]{Using Overloaded Operators}
+Let's create two `Vector` objects and add them together using the overloaded addition operator (+):
+
+\begin{lstlisting}[style=python]
+v1 = Vector(1, 2)
+v2 = Vector(3, 4)
+v3 = v1 + v2
+print(v3.x, v3.y)
+\end{lstlisting}
+
+Output: \texttt{4 6}
+
+Here, we create two `Vector` objects, `v1` and `v2`, and add them together using the overloaded addition operator `+`. The resulting `Vector` object, `v3`, has components `(4, 6)`.
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Operator Overloading in Object-Oriented Programming}
+We can also overload other operators, such as the multiplication operator (*), to perform scalar multiplication of a vector.
+
+\begin{lstlisting}[style=python]
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+
+    def __mul__(self, scalar):
+        return Vector(self.x * scalar, self.y * scalar)
+\end{lstlisting}
+
+%Here, the `\_\_mul\_\_` method takes a scalar value as an argument, multiplies each component of the vector by the scalar, and returns a new `Vector` object representing the scaled vector.
+
+By overloading operators, we can make our code more intuitive and expressive, and allow our user-defined objects to behave more like built-in types.
+\end{frame}
+
+\begin{frame}[fragile]{List of Overloaded Operators in Python}
+\begin{center}
+\begin{tabular}{ccc} 
+ \rowcolor{gray!30}
+ {Operator} & Method Name & Description \\
+ \texttt{+} & \texttt{\_\_add\_\_} & Addition \\
+ \rowcolor{gray!10}
+ \texttt{-} & \texttt{\_\_sub\_\_} & Subtraction \\
+ \texttt{*} & \texttt{\_\_mul\_\_} & Multiplication \\
+ \rowcolor{gray!10}
+ \texttt{/} & \texttt{\_\_truediv\_\_} & Division \\
+ \texttt{//} & \texttt{\_\_floordiv\_\_} & Floor Division \\
+ \rowcolor{gray!10}
+ \texttt{\%} & \texttt{\_\_mod\_\_} & Modulo \\
+ \texttt{**} & \texttt{\_\_pow\_\_} & Exponentiation \\
+ \rowcolor{gray!10}
+ \texttt{<} & \texttt{\_\_lt\_\_} & Less Than \\
+ \texttt{<=} & \texttt{\_\_le\_\_} & Less Than or Equal To \\
+ \rowcolor{gray!10}
+ \texttt{==} & \texttt{\_\_eq\_\_} & Equal To \\
+ \texttt{!=} & \texttt{\_\_ne\_\_} & Not Equal To \\
+ \rowcolor{gray!10}
+ \texttt{>} & \texttt{\_\_gt\_\_} & Greater Than \\
+ \texttt{>=} & \texttt{\_\_ge\_\_} & Greater Than or Equal To \\
+\end{tabular}
+\end{center}
+\end{frame}
+
+
+
+\end{document}

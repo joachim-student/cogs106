@@ -1,0 +1,78 @@
+\usetheme{metropolis}
+\usepackage{listings}
+
+\lstdefinestyle{Python}
+{
+    language=Python,
+    basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\color{blue}\ttfamily,
+	otherkeywords={self,False},
+    commentstyle=\color{green!60!black}\ttfamily,
+    stringstyle=\color{red!80!black}\ttfamily,
+    backgroundcolor=\color{blue!10!white},
+    showstringspaces=false,
+    numbers=none,
+    numberstyle=\tiny,
+    numbersep=5pt,
+    xleftmargin=2pt,
+    framexleftmargin=4pt,
+    framexrightmargin=4pt,
+    framexbottommargin=5pt,
+    framextopmargin=5pt,
+    %breaklines=true,
+    captionpos=b
+}
+
+\lstdefinestyle{MATLAB}{
+    language=MATLAB,
+    basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\color{blue}\ttfamily,
+	otherkeywords={classdef,properties,methods},
+    stringstyle=\color{red!80!black}\ttfamily,
+    commentstyle=\color{green!60!black}\ttfamily,
+    numbers=none,
+    backgroundcolor=\color{orange!15!white},
+    showstringspaces=false,
+    numbers=none,
+    numberstyle=\tiny,
+    numbersep=5pt,
+    xleftmargin=2pt,
+    framexleftmargin=4pt,
+    framexrightmargin=4pt,
+    framexbottommargin=5pt,
+    framextopmargin=5pt,
+    %breaklines=true,
+    captionpos=b
+}
+
+\lstdefinestyle{output}{
+    language=bash,
+    basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\ttfamily,
+    stringstyle=\ttfamily,
+    commentstyle=\color{green!60!black}\ttfamily,
+    numbers=none,
+    backgroundcolor=\color{white},
+    showstringspaces=false,
+    numbers=none,
+    numberstyle=\tiny,
+    numbersep=5pt,
+    xleftmargin=2pt,
+    framexleftmargin=4pt,
+    framexrightmargin=4pt,
+    framexbottommargin=5pt,
+    framextopmargin=5pt,
+    %breaklines=true,
+    captionpos=b
+}
+
+\renewcommand{\emph}[1]{{\color{red}#1}}
+
+\beamerdefaultoverlayspecification{<+->}
+
+\setbeamercolor{block body}{bg=mDarkTeal!30}
+\setbeamercolor{block title}{bg=mDarkTeal,fg=black!2}
+
+\title{Test-Driven Development}
+\author{Joachim Vandekerckhove}
+\date{}
