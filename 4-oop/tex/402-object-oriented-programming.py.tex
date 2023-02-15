@@ -178,13 +178,13 @@ class MyClass:
     
     def __init__(self):
         self.public_attr = 0
-        self._private_attr = 1
+        self.__private_attr = 1
     
     def public_method(self):
         print("This is a public method")
-        self._private_method()
+        self.__private_method()
     
-    def _private_method(self):
+    def __private_method(self):
         print("This is a private method")
 
     \end{lstlisting}
@@ -194,10 +194,10 @@ class MyClass:
 
 \begin{frame}[fragile]{Private vs Public Methods and Attributes}
   \begin{itemize}
-    \item In Python, there are no \textit{truly} private methods or attributes
-    \item By convention (only), a leading underscore indicates a ``private'' method or attribute
+    \item By convention, two leading underscores indicates a ``private'' method or attribute
     \item Private methods and attributes are intended for internal use only, and should not be accessed from outside the class
     \item Public methods and attributes can be freely accessed from outside the class
+    \item In Python, there are no \textit{truly} private methods or attributes
   \end{itemize}
 \end{frame}
 
@@ -207,15 +207,15 @@ class BankAccount:
     def __init__(self, initial_balance):
         if initial_balance < 0:
             raise ValueError("Initial balance cannot be <0")
-        self._balance = initial_balance
+        self.__balance = initial_balance
 
     def get_balance(self):
-        return self._balance
+        return self.__balance
   \end{lstlisting}
   \begin{itemize}
-    \item The `\_balance` attribute in `BankAccount` is now private
+    \item The `\_\_balance` attribute in `BankAccount` is now private
     \item It is accessed using the `get\_balance()` method, which is public
-    \item External code shouldn't modify the `\_balance` attribute directly
+    \item External code shouldn't modify the `\_\_balance` attribute directly
     \item This ensures that the balance is always valid and prevents external code from corrupting the object's state
   \end{itemize}
 \end{frame}
@@ -226,22 +226,22 @@ class BankAccount:
     def __init__(self, initial_balance):
         if initial_balance < 0:
             raise ValueError("Initial balance cannot be <0")
-        self._balance = initial_balance
+        self.__balance = initial_balance
 
     def get_balance(self):
-        return self._balance
+        return self.__balance
         
     def deposit(self, amount):
         if amount < 0:
             raise ValueError("Deposit amount cannot be <0")
-        self._balance += amount
+        self.__balance += amount
 
     def withdraw(self, amount):
         if amount < 0:
             raise ValueError("Withdrawal amount cannot be <0")
-        if self._balance < amount:
+        if self.__balance < amount:
             raise ValueError("Insufficient funds")
-        self._balance -= amount
+        self.__balance -= amount
   \end{lstlisting}
 \end{frame}
 
