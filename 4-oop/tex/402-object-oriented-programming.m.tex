@@ -248,14 +248,14 @@ classdef BankAccount
             error('Initial balance cannot be negative.'), end
          obj.balance = initial_balance;
       end
-      function balance = get_balance(obj)
+      function balance = get.balance(obj)
          balance = obj.balance;
 end, end, end
 \end{lstlisting}
 
   \begin{itemize}
     \item The `balance` attribute in `BankAccount` is now private
-    \item It is accessed using the `get\_balance()` method, which is public
+    \item It is accessed using the `get.balance()` method, which is public
     \item External code can't modify the `balance` attribute directly
     \item This ensures that the balance is always valid and prevents external code from corrupting the object's state
   \end{itemize}
@@ -276,7 +276,7 @@ classdef BankAccount
             obj.balance = initial_balance;
         end
         
-        function balance = get_balance(obj)
+        function balance = get.balance(obj)
             balance = obj.balance;
         end
     
@@ -284,14 +284,14 @@ classdef BankAccount
 \end{frame}    
 \begin{frame}[fragile]{Public Methods in the BankAccount Class}
   \begin{lstlisting}[style=matlab]
-        function deposit(obj, amount)
+        function obj = deposit(obj, amount)
             if amount < 0
                 error('Deposit amount cannot be <0')
             end
             obj.balance = obj.balance + amount;
         end
         
-        function withdraw(obj, amount)
+        function obj = withdraw(obj, amount)
             if amount < 0
                 error('Withdrawal amount cannot be <0')
             end
