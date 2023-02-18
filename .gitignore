@@ -1,5 +1,8 @@
 # Distribution / packaging
 solutions/
+*/video/
+*.swp
+*/assignment/*/SignalDetection.*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
