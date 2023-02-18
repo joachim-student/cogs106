@@ -37,15 +37,15 @@ class TestSignalDetection(unittest.TestCase):
 
     def test_addition(self):
         sd = SignalDetection(1, 1, 2, 1) + SignalDetection(2, 1, 1, 3)
-        expected = [3, 2, 3, 4]
-        obtained = [sd.hits, sd.misses, sd.false_alarms, sd.correct_rejections]
+        expected = SignalDetection(3, 2, 3, 4).criterion()
+        obtained = sd.criterion()
         # Compare calculated and expected criterion
         self.assertEqual(obtained, expected)
 
     def test_multiplication(self):
         sd = SignalDetection(1, 2, 3, 1) * 4
-        expected = [4, 8, 12, 4]
-        obtained = [sd.hits, sd.misses, sd.false_alarms, sd.correct_rejections]
+        expected = SignalDetection(4, 8, 12, 4).criterion()
+        obtained = sd.criterion()
         # Compare calculated and expected criterion
         self.assertEqual(obtained, expected)
 
