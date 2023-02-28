@@ -66,7 +66,7 @@ L(a) = \sum_i \ell\left(
 \Phi\!\left[a + \Phi^{-1}\!\left(\gamma_i\right)\right],\gamma_i; h_i,f_i,m_i,r_i
 \right)
 ```
-Note that the summation in the equation is over `SignalDetection` objects, taking the _observed_ false alarm rate $\gamma_i$ from each and using that to compute the _predicted_ hit rate $\bar\theta_i = \Phi\!\left(a + \Phi^{-1}\!\left(\gamma_i\right)\right)$ for each.  Then the method will call the `nLogLikelihood()` method of each `SignalDetection` object and add all the $\ell$ values together.
+Note that the summation in the equation is over `SignalDetection` objects, taking the _observed_ false alarm rate $\gamma_i$ from each and using that to compute the _predicted_ hit rate $\bar\theta_i = \Phi\left(a + \Phi^{-1}\left(\gamma_i\right)\right)$ for each.  Then the method will call the `nLogLikelihood()` method of each `SignalDetection` object and add all the $\ell$ values together.
 
 The method should have this signature: `L = SignalDetection.rocLoss(sdtList, a)`.   `sdtList` should be an array of `SignalDetection` objects, and `a` should be a scalar.
 
