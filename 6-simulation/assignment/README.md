@@ -19,14 +19,14 @@ The method should have this signature: `SignalDetection.plot_roc(sdtList)`.   `s
 ### `nLogLikelihood()`
 
 An <u>instance method</u> that calculates the negative log-likelihood of a `SignalDetection` object given an arbitrary hit rate and false alarm rate.  The method should take a hit rate $\theta$ and false alarm rate $\gamma$ as input and calculate the likelihood on the basis of the object's own hits $h$, false alarms $f$, misses $m$ , and correct rejections $r$.  The likelihood function $L$ is the product of two binomial likelihoods, from which we can remove some constants, and so the negative log-likelihood $\ell$ is:
-$$
+```math
 \begin{aligned}
 P\left(h,f|\theta,\gamma,m,r\right)
   &= {h+m \choose h} \theta^h\left(1-\theta\right)^m \times {f+r \choose f}\gamma^f\left(1-\gamma\right)^r\\
   &\propto \theta^h\left(1-\theta\right)^m \gamma^f\left(1-\gamma\right)^r\\
 \Rightarrow\ell\left(\theta,\gamma;h,f,m,r\right) &= -h\log\theta - m\log\left(1-\theta\right) - f \log\gamma - r\log\left(1-\gamma\right)
 \end{aligned}
-$$
+```
 The method should have this signature: `ell = sdt.nLogLikelihood(hitRate, falseAlarmRate)`.   `ell`, `hitRate`, and `falseAlarmRate` should be scalars.
 
 ### `rocCurve()`
