@@ -85,3 +85,5 @@ Useful functions to complete the assignment:
   3. The test suite in [m/TestSignalDetection.m](m/TestSignalDetection.m)
 
 The names of the unit tests will tell you something about why they fail.  For the other functions, you may need to access their documentation.
+
+Your code should pass the test suite, generate no errors when used correctly, and should be generally free of code smells such as repetition of code or obscure naming of variables.
