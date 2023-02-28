@@ -78,10 +78,10 @@ Useful functions to complete the assignment:
 * Python
   1.  `numpy.random.binomial()` function to simulate the hits, misses, false alarms, and correct rejections for each set of parameters.
   2.  `scipy.optimize.minimize()` for minimizing.
-  3.  The test suite in [py/TestSignalDetection.py]()
+  3.  The test suite in [py/TestSignalDetection.py](py/TestSignalDetection.py)
 * MATLAB
   1. `binornd()` function to simulate the hits, misses, false alarms, and correct rejections for each set of parameters.
   2. `fminsearch()` for minimizing.
-  3. The test suite in [m/TestSignalDetection.m]()
+  3. The test suite in [m/TestSignalDetection.m](m/TestSignalDetection.m)
 
 The names of the unit tests will tell you something about why they fail.  For the other functions, you may need to access their documentation.
