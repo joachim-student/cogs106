@@ -1,8 +1,11 @@
 # Distribution / packaging
+temp/
 solutions/
 */video/
 *.swp
+*.asv
 */assignment/*/SignalDetection.*
+*/assignment/*/Metropolis.*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
