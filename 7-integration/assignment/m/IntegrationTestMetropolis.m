@@ -1,10 +1,10 @@
 
 %% Simulate signal detection data
-sdtList = SignalDetection.simulate(1, [-1, 0, 1], 40*1000, 40*1000);
+sdtList = SignalDetection.simulate(1, [-1, 0, 1], 40, 40);
 
 %% Define the log-likelihood function
 logPosterior = @(a) -SignalDetection.rocLoss(a, sdtList) + ...
-    0*log(normpdf(a, 0, 10));
+    log(normpdf(a, 0, 10));
 
 %% Initialize Metropolis-Hastings sampler with initial state 0
 sampler = Metropolis(logPosterior, 0);
