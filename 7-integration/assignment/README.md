@@ -4,16 +4,12 @@ In this assignment, you will create a new class called `Metropolis`.  The class 
 
 ## Background
 
-The Metropolis algorithm is a type of MCMC method used to generate samples from a probability distribution $p$. The algorithm proceeds by starting with an initial state $s$ and proposing a new state $s^*$ using a Gaussian proposal distribution. The acceptance probability of the proposed state is then calculated:
-$$
-Pr = \min\left(1, \exp\left(\frac{p(s^*)}{p(s)}\right)\right)
-$$
+The Metropolis algorithm is a type of MCMC method used to generate samples from a probability distribution $p$. The algorithm proceeds by starting with an initial state $s$ and proposing a new state $s^{\*}$ using a Gaussian proposal distribution. The acceptance probability of the proposed state is then calculated:
+$$Pr = \min\left(1, \exp\left(\frac{p(s^{*})}{p(s)}\right)\right)$$
 ... and compared to a randomly generated number from a standard uniform distribution. If the acceptance probability is greater than the random number, the proposed state is accepted and becomes the new state. Otherwise, the current state is retained. During the **sampling phase** this process is repeated many times to generate a sequence (a "chain") of states that converges to the target distribution.
 
 The Gaussian proposal distribution starts with state $\mu = 0$ and standard deviation $\sigma_1 = 1$, but these values first need to be automatically adjusted so that the rate of acceptance is approximately $r_\text{target} = 0.4$.  During the **adaptation phase**, no sample sequence should be saved, only the current state.  The adaptation occurs in $K$ blocks, with a series of $n_k$ proposals being generated, the observed acceptance rate $r_k$ being computed, and the proposal standard deviation being updated by the multiplicative factor given below. 
-$$
-\sigma_{k+1} = \sigma_{k} \times \left(\frac{r_\text{target}}{r_{k}}\right)^{1.1}
-$$
+$$\sigma_{k+1} = \sigma_{k} \times \left(\frac{r_\text{target}}{r_{k}}\right)^{1.1}$$
 The user should choose the number and length of adaptation blocks, $n_1, n_2, \ldots, n_K$.  The final standard deviation $\sigma_K$ will be used as the standard deviation during the sampling phase.
 
 ## Assignment Details
@@ -41,6 +37,5 @@ In no particular order:
 
 * If $u$ follows a standard uniform distribution, then $\log(u)$ follows an exponential distribution with rate 1 and vice versa.
 * My solution was about 40 lines of code.
-* The integration test should produce a plot looking something like this: ![](/run/user/1000/doc/2388e89d/rocResults.png)
-
+* The integration test should produce a plot looking something like this: ![](rocResults.png)
 * If anything in this prompt is unclear, use your best judgment.
