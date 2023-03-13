@@ -3,6 +3,7 @@ temp/
 solutions/
 */video/
 *.swp
+*.mp4
 *.asv
 */assignment/*/SignalDetection.*
 */assignment/*/Metropolis.*
