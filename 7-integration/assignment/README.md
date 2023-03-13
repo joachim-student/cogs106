@@ -14,7 +14,7 @@ The Gaussian proposal distribution starts with state $\mu = 0$ and standard devi
 $$
 \sigma_{k+1} = \sigma_{k} \times \left(\frac{r_\text{target}}{r_{k}}\right)^{1.1}
 $$
-The user should choose the number and length of adaptation blocks, $n_1. n_2, \ldots, n_K$.  The final standard deviation $\sigma_K$ will be used as the standard deviation during the sampling phase.
+The user should choose the number and length of adaptation blocks, $n_1, n_2, \ldots, n_K$.  The final standard deviation $\sigma_K$ will be used as the standard deviation during the sampling phase.
 
 ## Assignment Details
 
