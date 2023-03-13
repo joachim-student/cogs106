@@ -19,7 +19,7 @@
 \end{frame}
 
 \begin{frame}{Motivating application}
-In cognitive science (and science generally), we are often interested in \emph{the probability that a theory is true} or the \emph{probability of values of parameters}.\\[2ex]
+In cognitive science (and science generally), we are often interested in \emph{the probability that a theory is true} or the \emph{probability of values of parameters}.\\[2ex]\pause
 
 ``Now that we have these data, what are the likely values of the generating parameters?''
 \end{frame}
@@ -38,7 +38,8 @@ h_i &\sim& \text{Bin}\left(\theta^h_i, S\right)\\
 \end{array}
 \right.
 $$
-and given the data $D$, which consists of hits $h_i$, false alarms $f_i$, signal count $S$, and noise count $N$?\\[2ex]
+and given the data $D$, which consists of hits $h_i$, false alarms $f_i$, signal count $S$, and noise count $N$?\\[2ex]\pause
+
 In other words, what is $p\left(a | D\right)$?
 \end{frame}
 
@@ -46,8 +47,10 @@ In other words, what is $p\left(a | D\right)$?
 We can actually work out that distribution:
 $$
 p\left(a | D\right) = \frac{p\left(D|a\right)p\left(a\right)}{p\left(D\right)} \propto p\left(D|a\right)p\left(a\right)
-$$
-But now what?  We may want to \emph{characterize this distribution}:
+$$\pause
+But now what?  \pause
+
+We may want to \emph{characterize this distribution}\pause:
 \begin{itemize}
 \item Get the mean of this distribution as a good guess for $a$
 \item Calculate the probability that it is in a certain range
@@ -60,7 +63,7 @@ But now what?  We may want to \emph{characterize this distribution}:
 \begin{itemize}
 \item Get the mean of this distribution as a good guess for $a$: $$E(a | D) = \int_{-\infty}^{+\infty} a\, p(a | D)\;da$$
 \item Calculate the probability that it is in a certain range: $$P(L < a < U | D) = \int_L^U p(a | D)\;da$$
-\item Get its standard deviation for a measure of uncertainty: $$S(a | D) = \sqrt{E(a^2) - \left[E(a)\right]^2}$$
+\item Get its standard deviation for a measure of uncertainty: $$S(a | D) = \sqrt{E(a^2 | D) - \left[E(a | D)\right]^2}$$
 \end{itemize}
 \end{frame}
 
@@ -128,7 +131,7 @@ to be able to draw random samples from it.
 
 \frame{\frametitle{Metropolis sampler}
 \begin{itemize}
- \item A widely applicable algorithm is the \emph{Metropolis} algorithm.
+ \item A widely applicable MC algorithm is the \emph{Metropolis} algorithm.
  \item Named after \name{Nicholas Metropolis}, who created it together with \name{John von Neumann} while working on the \name{Manhattan Project}.
  \item In the algorithm, we will randomly generate \emph{candidate samples} from some simple distribution, and then decide to accept or reject the candidate.
  \item Metropolis algorithms need some customization and fine-tuning to be most efficient.
@@ -212,12 +215,12 @@ Metropolis sampling algorithm proceeds as follows:
 \frame{\frametitle{Metropolis sampler: Inference}
 \begin{itemize}
  \item Finally, we calculate the quantities we're interested in using.
- \item The quantities can be simple summaries of the samples in our MCMC chain (mean, median, standard deviation, probabilities in intervals, quantiles...).
+ \item The quantities can be simple summaries of the samples in our MCMC chain (mean, median, standard deviation, quantiles...).
  \item However, they can also be complex functions of the samples, such as \emph{posterior predictives} -- entire simulated data sets:
  \begin{enumerate}
   \item Draw samples
   \item Generate a synthetic data set from each sample
-  \item Calculate a summary statistic on each synthetic data set and visualize the distribution
+  \item Calculate a summary statistic on each synthetic data set and visualize the distribution to illustrate the uncertainty
   \item Calculate the same statistic on the real data and show its position in the distribution
  \end{enumerate}
  \item Figures can also be summary statistics!
