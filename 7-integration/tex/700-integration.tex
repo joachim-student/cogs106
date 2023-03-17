@@ -183,7 +183,8 @@ Metropolis sampling algorithm proceeds as follows:
   \item If it is too high, increase the standard deviation because it's climbing a slope  
   \item Repeat this a few times to get an acceptance rate close to 40\%
 \end{enumerate}
-\item A simple rule to update the standard deviation is $$\sigma_\text{new} = \sigma_\text{old} \times \left(\frac{r_\text{target}}{r_k}\right)^{1.1}$$
+%\item A simple rule to update the standard deviation is $$\sigma_\text{new} = \sigma_\text{old} \times \left(\frac{r_\text{target}}{r_k}\right)^{1.1}$$
+\item A simple rule to update the standard deviation is $$\sigma_\text{new} = \sigma_\text{old} \times \emph{\left(\frac{r_k}{r_\text{target}}\right)}^{1.1}$$
 \item How much to fine-tune depends on the specific case.
 \end{itemize}
 }
